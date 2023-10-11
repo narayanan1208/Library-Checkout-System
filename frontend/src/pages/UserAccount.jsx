@@ -11,11 +11,13 @@ function UserAccount() {
     setReturnBookDetails,
     returnBookDetails,
     returnBook,
-    fetchAllUserBookDataResponse,
     setAuthToken,
+    logout,
   } = useContext(BooksContext);
   const [returnOption, setReturnOption] = useState(false);
   const navigate = useNavigate();
+
+  // console.log("ALL USER BOOK DATA : ", allUserBookData);
 
   useEffect(() => {
     if (returnOption) {
@@ -49,7 +51,7 @@ function UserAccount() {
     // Perform the logout action here
     localStorage.removeItem("authToken");
     setAuthToken("");
-    setLoginResult({ success: false, message: "" });
+    logout();
     navigate("/login");
   };
 

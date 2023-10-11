@@ -3,8 +3,13 @@ import { BooksContext } from "../context/BooksContext";
 import { Navigate } from "react-router-dom";
 
 const LoginPage = () => {
-  const { loginCredentials, setLoginCredentials, checkLogin, loginResult } =
-    useContext(BooksContext);
+  const {
+    loginCredentials,
+    setLoginCredentials,
+    checkLogin,
+    loginResult,
+    setLoginResult,
+  } = useContext(BooksContext);
 
   const handleLogin = async () => {
     if (loginCredentials.username && loginCredentials.password) {
@@ -42,10 +47,10 @@ const LoginPage = () => {
         Login
       </button>
       <p className="signup-message">
-        {loginResult?.success ? (
+        {loginResult.success ? (
           <Navigate to="/user-account" />
         ) : (
-          `${loginResult.message}. Please Login In`
+          loginResult.message
         )}
       </p>
     </div>

@@ -3,7 +3,10 @@ import { BooksContext } from "../context/BooksContext";
 import { useContext } from "react";
 
 const NavBar = () => {
-  const loginResult = useContext(BooksContext);
+  const { loginResult } = useContext(BooksContext);
+
+  // console.log("loginResult :", loginResult);
+
   return (
     <div className="navbar p-4 position-fixed shadow ">
       <div>
@@ -11,7 +14,7 @@ const NavBar = () => {
           <h2 className=" text-white ">Bibliophile's Paradise</h2>
         </Link>
       </div>
-      {!loginResult?.success ? (
+      {!loginResult.success ? (
         <div className="nav-right">
           <Link to="/login" style={{ textDecoration: "none", color: "white" }}>
             Login

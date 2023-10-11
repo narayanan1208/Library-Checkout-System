@@ -25,8 +25,6 @@ const BooksProvider = ({ children }) => {
     message: "",
   });
 
-  // const [loginResult, setLoginResult] = useState(null);
-
   const [bookDataDetails, setBookDataDetails] = useState({
     user_id: "",
     book_name: "",
@@ -115,6 +113,7 @@ const BooksProvider = ({ children }) => {
         "http://localhost:5000/get_all_user_book_data"
       );
       const res = await response.json();
+      // console.log("RES ALL USER BOOK DATA : ", res);
       setAllUserBookData(res);
     } catch (error) {
       console.error("Error fetching book data:", error);
@@ -162,7 +161,7 @@ const BooksProvider = ({ children }) => {
         const result = await response.json();
         // console.log("Login response:", result);
         const token = result; // Extract the token
-        console.log("Login response token :", token);
+        // console.log("Login response token :", token);
         localStorage.setItem("authToken", JSON.stringify(token)); // Store the token in LocalStorage
         console.log(JSON.parse(localStorage.getItem("authToken")));
         setAuthToken(token); // Set the token in your component state
@@ -172,7 +171,10 @@ const BooksProvider = ({ children }) => {
         fetchAllUserBookDataResponse(); // Refresh user book data
       } else {
         console.error("Login failed");
-        setLoginResult({ success: false, message: "Login failed" });
+        setLoginResult({
+          success: false,
+          message: "No User Found!! Please Sign Up",
+        });
       }
     } catch (error) {
       console.error("Error during login:", error);
@@ -184,6 +186,10 @@ const BooksProvider = ({ children }) => {
   };
 
   // console.log("BOOK DATA : ", booksData);
+
+  const logout = () => {
+    setLoginResult({ success: false, message: "" });
+  };
 
   const bookCount = () => {
     const count = Object.values(allUserBookData).filter(
@@ -261,6 +267,7 @@ const BooksProvider = ({ children }) => {
         loginResult,
         setLoginResult,
         checkLogin,
+        logout,
         bookDataDetails,
         setBookDataDetails,
         addBookData,
