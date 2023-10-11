@@ -1,0 +1,2 @@
+WelcomeID,Message,MessageCode,CreatedAt
+1,Hello: React Frontend! Regards: A message in the database returned by flask.,WELCOME_MESSAGE,

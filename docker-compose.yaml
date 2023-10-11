@@ -1,0 +1,67 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+    command: python run.py
+    environment:
+      FLASK_ENV: development
+      POSTGRES_DB: user
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST: database
+      POSTGRES_PORT: 5432
+    depends_on:
+      database:
+        condition: service_healthy
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - node_modules:/app/node_modules
+
+    command: npm run dev
+    depends_on:
+      - backend
+        # condition: service_healthy
+  database:
+    image: postgres:latest
+
+    environment:
+      POSTGRES_DB: user
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  db_builder:
+    build:
+      context: ./database
+
+    environment:
+      POSTGRES_DB: user
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST: database
+      POSTGRES_PORT: 5432
+    volumes:
+      - ./database:/app
+    depends_on:
+      - database
+
+volumes:
+  node_modules:
+  db_data:
